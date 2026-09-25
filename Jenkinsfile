@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKERHUB_USER        = 'emnablel'
-        DOCKER_IMAGE_BACKEND  = "${DOCKERHUB_USER}/emna-5Arctic8-appgestion-backend"
-        DOCKER_IMAGE_FRONTEND = "${DOCKERHUB_USER}/emna-5Arctic8-appgestion-frontend"
+        DOCKER_IMAGE_BACKEND  = "${DOCKERHUB_USER}/emna-5arctic8-appgestion-backend"
+        DOCKER_IMAGE_FRONTEND = "${DOCKERHUB_USER}/emna-5arctic8-appgestion-frontend"
     }
 
     stages {
