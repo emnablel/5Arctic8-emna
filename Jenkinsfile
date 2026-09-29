@@ -66,10 +66,11 @@ pipeline {
 
         stage('Maven Deploy') {
             steps {
-                dir('backend') {
-                    sh 'mvn deploy -DskipTests -DaltDeploymentRepository=local-repo::file:$WORKSPACE/deploy-repo'
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    dir('backend') {
+                        sh 'mvn deploy -DskipTests'
+                    }
                 }
-                archiveArtifacts artifacts: 'deploy-repo/**', fingerprint: true
             }
         }
 
