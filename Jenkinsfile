@@ -5,6 +5,7 @@ pipeline {
         DOCKERHUB_USER        = 'emnablel'
         DOCKER_IMAGE_BACKEND  = "${DOCKERHUB_USER}/emna-5arctic8-appgestion-backend"
         DOCKER_IMAGE_FRONTEND = "${DOCKERHUB_USER}/emna-5arctic8-appgestion-frontend"
+        DOCKER_IMAGE_MYSQL    = "${DOCKERHUB_USER}/emna-5arctic8-appgestion-mysql"
     }
 
     stages {
@@ -26,7 +27,12 @@ pipeline {
         stage('Maven Test') {
             steps {
                 dir('backend') {
-                    sh 'mvn test -Dtest=CoutCalculatorTest'
+                    sh 'mvn test'
+                }
+            }
+            post {
+                always {
+                    junit 'backend/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -36,6 +42,7 @@ pipeline {
                 dir('backend') {
                     sh 'mvn package -DskipTests'
                 }
+                archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
             }
         }
 
@@ -52,6 +59,9 @@ pipeline {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push $DOCKER_IMAGE_BACKEND:latest'
                     sh 'docker push $DOCKER_IMAGE_FRONTEND:latest'
+                    sh 'docker pull mysql:8.0'
+                    sh 'docker tag mysql:8.0 $DOCKER_IMAGE_MYSQL:8.0'
+                    sh 'docker push $DOCKER_IMAGE_MYSQL:8.0'
                 }
             }
         }
