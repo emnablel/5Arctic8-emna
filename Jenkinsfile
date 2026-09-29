@@ -64,6 +64,15 @@ pipeline {
             }
         }
 
+        stage('Maven Deploy') {
+            steps {
+                dir('backend') {
+                    sh 'mvn deploy -DskipTests -DaltDeploymentRepository=local-repo::file:$WORKSPACE/deploy-repo'
+                }
+                archiveArtifacts artifacts: 'deploy-repo/**', fingerprint: true
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE_BACKEND:latest ./backend'
