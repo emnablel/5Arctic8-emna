@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    options {
+        disableConcurrentBuilds()
+    }
 
     environment {
         DOCKERHUB_USER        = 'emnablel'
