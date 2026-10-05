@@ -105,8 +105,8 @@ pipeline {
             steps {
                 sh 'kubectl apply -f k8s/'
                 sh 'kubectl rollout restart deployment/backend deployment/frontend'
-                sh 'kubectl rollout status deployment/backend --timeout=180s'
-                sh 'kubectl rollout status deployment/frontend --timeout=180s'
+                sh 'kubectl rollout status deployment/backend --timeout=300s'
+                sh 'kubectl rollout status deployment/frontend --timeout=300s'
             }
         }
     }
