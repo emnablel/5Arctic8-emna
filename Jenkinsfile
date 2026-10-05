@@ -99,7 +99,7 @@ pipeline {
 
         stage('Docker Compose Up') {
             steps {
-                sh 'docker compose down || true'
+                sh 'docker rm -f mysql-db backend-app frontend-app || true'
                 sh 'docker compose up -d --build'
             }
         }
